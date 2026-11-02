@@ -1,0 +1,103 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="mx-auto w-full max-w-md space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-lg">
+  <div class="text-center">
+    <h2 class="text-2xl font-bold tracking-tight text-slate-900">Criar uma conta</h2>
+    <p class="mt-1 text-sm text-slate-600">Preencha os dados abaixo para se cadastrar.</p>
+  </div>
+
+
+  <div>
+    <label for="nome" class="mb-1 block text-sm font-medium text-slate-700">Nome completo*</label>
+    <input
+      type="text"
+      id="nome"
+      name="nome"
+      placeholder="Digite seu nome completo"
+      formControlName="nome"
+      class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
+      [class.border-red-500]="form.get('nome')?.invalid && form.get('nome')?.touched"
+    />
+    @if (form.get('nome')?.hasError('required') && form.get('nome')?.touched) {
+      <p class="mt-1 text-sm text-red-600">O nome é obrigatório.</p>
+    }
+  </div>
+
+
+  <div>
+    <label for="email" class="mb-1 block text-sm font-medium text-slate-700">E-mail*</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      placeholder="seuemail@exemplo.com"
+      formControlName="email"
+      class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
+      [class.border-red-500]="form.get('email')?.invalid && form.get('email')?.touched"
+    />
+    @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+      <p class="mt-1 text-sm text-red-600">O e-mail é obrigatório.</p>
+    }
+    @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+      <p class="mt-1 text-sm text-red-600">Insira um e-mail válido.</p>
+    }
+  </div>
+
+
+  <div>
+    <label for="senha" class="mb-1 block text-sm font-medium text-slate-700">Crie uma senha*</label>
+    <input
+      type="password"
+      id="senha"
+      name="senha"
+      placeholder="Digite uma senha forte"
+      formControlName="senha"
+      (input)="validatePassword()"
+      class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
+      [class.border-red-500]="form.get('senha')?.invalid && form.get('senha')?.touched"
+    />
+    @if (form.get('senha')?.hasError('required') && form.get('senha')?.touched) {
+      <p class="mt-1 text-sm text-red-600">A senha é obrigatória.</p>
+    }
+
+
+    <div class=" px-4">
+        <ul class="mt-2 list-disc space-y-1 pl-5 text-sm ">
+            <li [class.text-green-600]="minMaxRules" [class.text-red-600]="!minMaxRules">Ter entre 8 e 16 caracteres</li>
+            <li [class.text-green-600]="numberRules" [class.text-red-600]="!numberRules">Ter ao menos 1 número</li>
+            <li [class.text-green-600]="upperCaseRules" [class.text-red-600]="!upperCaseRules">Ter ao menos 1 letra maiúscula</li>
+            <li [class.text-green-600]="specialCharRules" [class.text-red-600]="!specialCharRules">Ter ao menos 1 caractere especial</li>
+            <li [class.text-green-600]="letterRules" [class.text-red-600]="!letterRules">Ter ao menos 1 letra</li>
+        </ul>
+    </div>
+  </div>
+
+
+  <div>
+    <label for="confirmarSenha" class="mb-1 block text-sm font-medium text-slate-700">Confirmar Senha*</label>
+    <input
+      type="password"
+      id="confirmarSenha"
+      name="confirmarSenha"
+      placeholder="Repita a senha criada"
+      formControlName="confirmarSenha"
+      class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
+      [class.border-red-500]="form.get('confirmarSenha')?.touched && (form.get('confirmarSenha')?.invalid || form.hasError('mismatch'))"
+    />
+    @if (form.hasError('mismatch') && form.get('confirmarSenha')?.touched) {
+      <p class="mt-1 text-sm text-red-600">As senhas não coincidem.</p>
+    }
+  </div>
+
+
+  <button
+    type="submit"
+    class="w-full rounded-md bg-indigo-600 px-4 py-2 font-semibold text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+  >
+    Cadastrar
+  </button>
+
+
+    <p class="text-center text-sm text-slate-600">
+        Já tem uma conta?
+        <a routerLink="login" routerLinkActive="active" class="font-medium text-indigo-600 hover:text-indigo-500 underline">Faça login</a>
+    </p>
+</form>
