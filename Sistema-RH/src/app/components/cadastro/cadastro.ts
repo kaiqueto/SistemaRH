@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { senhasIguais } from '../../validators/senhas-iguais';
 
 @Component({
   selector: 'app-cadastro',
@@ -20,8 +21,10 @@ export class Cadastro {
     nome: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     senha: new FormControl('', [Validators.required, Validators.pattern(this.passwordRegex)]),
-    confirmarSenha: new FormControl('', [Validators.required, Validators.pattern(this.passwordRegex)]),
-  })
+    confirmarSenha: new FormControl('', [Validators.required]),
+  },
+  { validators: senhasIguais }
+  );
 
   validatePassword(){
     const password = this.form.get('senha')?.value;
@@ -31,6 +34,12 @@ export class Cadastro {
       this.letterRules = /[a-zA-Z]/.test(password);
       this.upperCaseRules = /[A-Z]/.test(password);
       this.specialCharRules = /[@$!%*?&]/.test(password);
+    }else{
+      this.minMaxRules = false;
+      this.numberRules = false;
+      this.letterRules = false;
+      this.upperCaseRules = false;
+      this.specialCharRules = false;
     }
 
   }

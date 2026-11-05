@@ -5,13 +5,23 @@ import {FormularioFuncionarios} from './components/formulario-funcionarios/formu
 import {ListaFuncionarios} from './components/lista-funcionarios/lista-funcionarios';       
 import {Enderecos} from './components/enderecos/enderecos';
 import {Contatos} from './components/contatos/contatos'; 
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},
+
     {path: 'login', component: Login},
     {path: 'cadastro', component: Cadastro},
-    {path: 'formulario-funcionario', component: FormularioFuncionarios},
-    {path: 'lista-funcionarios', component: ListaFuncionarios},
-    {path: 'enderecos', component: Enderecos},
-    {path: 'contatos', component: Contatos},
+
+    {path:'',
+        canActivateChild: [authGuard],
+        children:[
+            {path: 'formulario-funcionario', component: FormularioFuncionarios},
+            {path: 'lista-funcionarios', component: ListaFuncionarios},
+            {path: 'enderecos', component: Enderecos},
+            {path: 'contatos', component: Contatos},
+        ]
+    } ,
+    
+    {path: '**', redirectTo: 'login'}
 ];

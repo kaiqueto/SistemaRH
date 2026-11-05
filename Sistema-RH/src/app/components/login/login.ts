@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import {  } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, Validators, NonNullableFormBuilder } from '@angular/forms';
+import { AuthService } from '../../services/auth';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -10,39 +12,36 @@ import {  } from '@angular/forms';
 })
 export class Login {
   passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+  
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+  
+  protected readonly carregando = signal(false);
+  protected readonly erro = signal <string | null>(null);
 
-  minMaxRules = false;
-  numberRules = false;
-  letterRules = false;
-  upperCaseRules = false;
-  specialCharRules = false;
+  protected readonly form = this.fb.group({
+    email:['', [Validators.required, Validators.email]],
+    senha: ['', [Validators.required]],
+  });
 
-  form = new FormGroup({ 
-    nome: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    senha: new FormControl('', [Validators.required, Validators.pattern(this.passwordRegex)]),
- })
-
-  onSubmit(){
-    if(this.form.valid)
-      alert("Formulário válido");
-    else
-      alert("Formulário inválido");
-
-
-    console.log(this.form.value);
-  }
-
-  validatePassword(){
-    const password = this.form.get('senha')?.value;
-    if(password){
-      this.minMaxRules = password.length >= 8 && password.length <= 16;
-      this.numberRules = /\d/.test(password);
-      this.letterRules = /[a-zA-Z]/.test(password);
-      this.upperCaseRules = /[A-Z]/.test(password);
-      this.specialCharRules = /[@$!%*?&]/.test(password);
+  protected entrar(): void{
+    if(this.form.invalid){
+      this.form.markAllAsTouched();
+      return;
     }
+    
+    this.carregando.set(true);
+    this.erro.set(null);
+    
+    this.auth.login(this.form.getRawValue()).subscribe({
+      next:() => this.router.navigate(['/lista-funcionarios']),
+      error:() =>{
+        this.erro.set('Email ou senha inválidos.');
+        this.carregando.set(false);
+      }
+    }
+)};
 
-  }
   
 }

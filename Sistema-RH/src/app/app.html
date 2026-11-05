@@ -1,11 +1,24 @@
-<nav class="shadow-md">
-  <ul class="flex flex-row justify-center pb-2 m-8 ">
-    <li><a class ='basis-64 px-8' routerLink="login" routerLinkActive="active">Login</a></li>
-    <li><a class ='nav-link px-8' routerLink="cadastro" routerLinkActive="active">Cadastro</a></li>
-    <li><a class ='nav-link px-8' routerLink="formulario-funcionario" routerLinkActive="active">Formulário de Funcionários</a></li>
-    <li><a class ='nav-link px-8' routerLink="lista-funcionarios" routerLinkActive="active">Lista de Funcionários</a></li>
-    <li><a class ='nav-link px-8' routerLink="enderecos" routerLinkActive="active">Endereços</a></li>
-    <li><a class ='nav-link px-8' routerLink="contatos" routerLinkActive="active">Contatos</a></li>
+<!-- app.html -->
+<nav class="bg-slate-900 shadow-md">
+  <ul class="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-1 px-4 py-3">
+    @for (l of auth.estaLogado() ? linksPrivados : linksPublicos; track l.rota) {
+      <li>
+        <a [routerLink]="l.rota" routerLinkActive="bg-indigo-600 text-white"
+           class="block rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:text-white">
+          {{ l.texto }}
+        </a>
+      </li>
+    }
+    @if (auth.estaLogado()) {
+      <li>
+        <button type="button" (click)="auth.logout()"
+                class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:text-white">
+          Sair
+        </button>
+      </li>
+    }
   </ul>
 </nav>
-<router-outlet></router-outlet>
+<main class="mx-auto w-full max-w-7xl px-4 py-6">
+  <router-outlet />
+</main>

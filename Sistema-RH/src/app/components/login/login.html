@@ -1,22 +1,5 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="mx-auto w-full max-w-md space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-lg">
+<form [formGroup]="form" (ngSubmit)="entrar()" class="mx-auto w-full max-w-md space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-lg">
   <h2 class="text-center text-2xl font-bold tracking-tight text-slate-900">Login</h2>
-
-  <!-- Nome -->
-  <div>
-    <label for="nome" class="mb-1 block text-sm font-medium text-slate-700">Nome*</label>
-    <input
-      type="text"
-      id="nome"
-      name="nome"
-      placeholder="Digite seu nome"
-      formControlName="nome"
-      class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
-      [class.border-red-500]="form.get('nome')?.invalid && form.get('nome')?.touched"
-    />
-    @if (form.get('nome')?.hasError('required') && form.get('nome')?.touched) {
-      <p class="mt-1 text-sm text-red-600">O nome é obrigatório.</p>
-    }
-  </div>
 
   <!-- E-mail -->
   <div>
@@ -44,29 +27,23 @@
       name="senha"
       placeholder="Digite sua senha"
       formControlName="senha"
-      (input)="validatePassword()"
       class="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
       [class.border-red-500]="form.get('senha')?.invalid && form.get('senha')?.touched"
     />
     @if (form.get('senha')?.hasError('required') && form.get('senha')?.touched) {
       <p class="mt-1 text-sm text-red-600">A senha é obrigatória.</p>
     }
-    <div class="py-4">
-        <ul class="mt-2 list-disc space-y-1 pl-5 text-sm ">
-            <li [class.text-green-600]="minMaxRules" [class.text-red-600]="!minMaxRules">Ter entre 8 e 16 caracteres</li>
-            <li [class.text-green-600]="numberRules" [class.text-red-600]="!numberRules">Ter ao menos 1 número</li>
-            <li [class.text-green-600]="upperCaseRules" [class.text-red-600]="!upperCaseRules">Ter ao menos 1 letra maiúscula</li>
-            <li [class.text-green-600]="specialCharRules" [class.text-red-600]="!specialCharRules">Ter ao menos 1 caractere especial</li>
-            <li [class.text-green-600]="letterRules" [class.text-red-600]="!letterRules">Ter ao menos 1 letra</li>
-        </ul>
-    </div>
+  </div>
 
-  
+  @if(erro()){
+    <p class="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{{erro()}}</p>
+  }
   <button
     type="submit"
-    class="w-full rounded-md bg-indigo-600 px-4 py-2 font-semibold text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    [disabled] = "carregando()"
+    class="w-full rounded-md bg-indigo-600 px-4 py-2 font-semibold text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
   >
-    Enviar
+    {{carregando() ? 'Entrando...':'Entrar'}}
   </button>
 
   <p class="text-center text-sm text-slate-600">
@@ -74,5 +51,4 @@
     <a routerLink="cadastro" routerLinkActive="active" class="font-medium text-indigo-600 hover:text-indigo-500 underline">Faça seu cadastro</a>
   </p>
 
-  </div>
 </form>
