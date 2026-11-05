@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { senhasIguais } from '../../validators/senhas-iguais';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './cadastro.html',
   styleUrl: './cadastro.css',
 })
@@ -18,7 +19,6 @@ export class Cadastro {
   specialCharRules = false;
 
   form = new FormGroup({
-    nome: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     senha: new FormControl('', [Validators.required, Validators.pattern(this.passwordRegex)]),
     confirmarSenha: new FormControl('', [Validators.required]),
