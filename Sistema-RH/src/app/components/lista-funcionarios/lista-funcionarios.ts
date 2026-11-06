@@ -15,6 +15,23 @@ export class ListaFuncionarios {
   protected readonly carregando = signal(true);
   protected readonly erro = signal('');
 
+  protected excluir(colaborador: Colaborador): void{
+    const confirmado = confirm(`Deseja excluir "${colaborador.nome}"?`);
+    if (!confirmado) return;
+
+    this.colaboradoreService.excluir(colaborador.id).subscribe({
+      next: () =>{
+        this.colaboradores.update((Lista) =>
+          Lista.filter((c) => c.id !== colaborador.id)
+        );
+      },
+      error: (err) => {
+        console.error('Erro ao excluir: ', err);
+        this.erro.set(`Não foi possível excluir (status ${err.status}).`)
+      },
+    });
+  }
+
   ngOnInit(): void{
     this.colaboradoreService.listar().subscribe({
       next: (lista) => {

@@ -11,4 +11,8 @@ export class ColaboradoresService{
     listar(): Observable<Colaborador[]>{
         return this.http.get<Colaborador[]>(`${environment.apiUrl}/usuarios`)
     }
+
+    excluir(id: number): Observable<void>{
+        return this.http.delete<void>(`${environment.apiUrl}/usuarios/${id}`)
+    }
 }
