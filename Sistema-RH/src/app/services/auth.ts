@@ -6,9 +6,11 @@ import { environment } from '../../environments/environment';
 import { LoginRequest } from '../models/login-request';
 import { LoginResponse } from '../models/login-response';
 
+
 const CHAVE_TOKEN = 'sistemarh_token';
 
 @Injectable({providedIn: 'root'})
+
 export class AuthService {
     private readonly http = inject(HttpClient);
     private readonly router = inject(Router);
@@ -46,7 +48,7 @@ export class AuthService {
 
     private salvarNoCookie(token: string): void{
         const umaHora = 60*60;
-        document.cookie=`$(CHAVE_TOKEN)=${encodeURIComponent(token)}; path=/; max-age=${umaHora}; SameSite=Strict`;
+        document.cookie=`${CHAVE_TOKEN}=${encodeURIComponent(token)}; path=/; max-age=${umaHora}; SameSite=Strict`;
     }
 
     private recuperarToken(): string | null {
