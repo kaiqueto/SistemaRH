@@ -10,6 +10,7 @@ import { LoginResponse } from '../models/login-response';
 const CHAVE_TOKEN = 'sistemarh_token';
 
 @Injectable({providedIn: 'root'})
+
 export class AuthService {
     private readonly http = inject(HttpClient);
     private readonly router = inject(Router);
