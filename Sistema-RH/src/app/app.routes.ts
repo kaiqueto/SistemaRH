@@ -21,7 +21,7 @@ export const routes: Routes = [
             {path: 'enderecos', component: Enderecos},
             {path: 'contatos', component: Contatos},
         ]
-    } ,
+    },
     
     {path: '**', redirectTo: 'login'}
 ];

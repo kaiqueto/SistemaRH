@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { Colaborador } from '../../models/colaborador';
 import { ColaboradoresService } from '../../services/colaborador';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-lista-funcionarios',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './lista-funcionarios.html',
   styleUrl: './lista-funcionarios.css',
 })
@@ -14,9 +15,11 @@ export class ListaFuncionarios {
   protected readonly colaboradores = signal<Colaborador[]>([]);
   protected readonly carregando = signal(true);
   protected readonly erro = signal('');
+  protected readonly excluindoId = signal<number | null>(null);
 
   protected excluir(colaborador: Colaborador): void{
     const confirmado = confirm(`Deseja excluir "${colaborador.nome}"?`);
+    this.excluindoId.set(colaborador.id);
     if (!confirmado) return;
 
     this.colaboradoreService.excluir(colaborador.id).subscribe({
@@ -24,6 +27,7 @@ export class ListaFuncionarios {
         this.colaboradores.update((Lista) =>
           Lista.filter((c) => c.id !== colaborador.id)
         );
+        this.excluindoId.set(null);
       },
       error: (err) => {
         console.error('Erro ao excluir: ', err);
